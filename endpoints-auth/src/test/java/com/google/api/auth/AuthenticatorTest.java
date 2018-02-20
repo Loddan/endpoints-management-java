@@ -66,7 +66,7 @@ public class AuthenticatorTest {
   private final HttpServletRequest request = mock(HttpServletRequest.class);
   private final JwtClaims jwtClaims =
       createJwtClaims(AUDIENCES, EMAIL, EXPIRATION_IN_FUTURE, ID, NOT_BEFORE_IN_PAST, ISSUER);
-  private final UserInfo userInfo = new UserInfo(AUDIENCES, EMAIL, ID, ISSUER);
+  private final UserInfo userInfo = new UserInfo(AUDIENCES, EMAIL, ID, ISSUER, jwtClaims.getClaimsMap());
 
   @Before
   public void setUp() {
@@ -90,7 +90,7 @@ public class AuthenticatorTest {
         ID,
         NOT_BEFORE_IN_PAST,
         ISSUER);
-    UserInfo userInfo1 = new UserInfo(ImmutableList.of(SERVICE_NAME), EMAIL, ID, ISSUER);
+    UserInfo userInfo1 = new UserInfo(ImmutableList.of(SERVICE_NAME), EMAIL, ID, ISSUER, jwtClaims1.getClaimsMap());
     AuthInfo authInfo =
         new AuthInfo(ImmutableMap.<String, Set<String>>of(PROVIDER_ID, ImmutableSet.of("aud1")));
     when(authTokenDecoder.decode(AUTH_TOKEN)).thenReturn(jwtClaims1);
@@ -250,6 +250,7 @@ public class AuthenticatorTest {
     assertEquals(expected.getEmail(), actual.getEmail());
     assertEquals(expected.getId(), actual.getId());
     assertEquals(expected.getIssuer(), actual.getIssuer());
+    assertEquals(expected.getAllClaims(), actual.getAllClaims());
   }
 
   private static JwtClaims createJwtClaims(

@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,6 +34,7 @@ public class UserInfo {
   private final String email;
   private final String id;
   private final String issuer;
+  private final Map<String, Object> allClaims;
 
   /**
    * Constructor.
@@ -42,6 +44,18 @@ public class UserInfo {
    * @param issuer the issuer
    */
   public UserInfo(Collection<String> audiences, String email, String id, String issuer) {
+    this(audiences, email, id, issuer, null);
+  }
+
+  /**
+   * Constructor.
+   * @param audiences the available audiences
+   * @param email the user's email address
+   * @param id the user's' id
+   * @param issuer the issuer
+   * @param allClaims the token claims
+   */
+  public UserInfo(Collection<String> audiences, String email, String id, String issuer, Map<String, Object> allClaims) {
     Preconditions.checkNotNull(audiences);
     Preconditions.checkNotNull(id);
     Preconditions.checkNotNull(issuer);
@@ -50,6 +64,7 @@ public class UserInfo {
     this.email = email;
     this.id = id;
     this.issuer = issuer;
+    this.allClaims = allClaims;
   }
 
   public Set<String> getAudiences() {
@@ -66,5 +81,9 @@ public class UserInfo {
 
   public String getIssuer() {
     return issuer;
+  }
+
+  public Map<String, Object> getAllClaims() {
+    return allClaims;
   }
 }

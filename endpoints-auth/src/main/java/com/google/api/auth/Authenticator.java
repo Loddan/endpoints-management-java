@@ -275,7 +275,7 @@ public class Authenticator {
         throw new UnauthenticatedException("Missing issuer field");
       }
 
-      return new UserInfo(audiences, email, subject, issuer);
+      return new UserInfo(audiences, email, subject, issuer, jwtClaims.getClaimsMap());
     } catch (MalformedClaimException exception) {
       throw new UnauthenticatedException("Cannot read malformed claim", exception);
     }
